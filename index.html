@@ -19,6 +19,15 @@
   max-height: 100%;
   object-fit: contain;
 }
+.item .links {
+  display: flex;
+  justify-content: center; /* Center align the links */
+  align-items: center;
+}
+
+.item .links a:not(:last-child) {
+  margin-right: 20px; /* Add margin between the links except for the last one */
+}
 </style>
 
 
@@ -28,5 +37,9 @@
       <img src="proyects/crossy_road/thumbnail.png" alt="El juego de crossy Road pero RTX">
     </a>
     <h2>Crossy Road RTX</h2>
+	<div class="links">
+      <a href="proyects/crossy_road/index.html">Try on Web</a>
+      <a href="proyects/crossy_road/apk/crossyRoadRTX.apk" download>Android Apk</a>
+    </div>
   </div>
 </div>
