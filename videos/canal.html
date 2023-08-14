@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open YouTube Channel</title>
+    <script>
+        window.onload = function() {
+            //Redireccionar al canal de YouTube
+
+            // Check if the YouTube app is installed on Android
+            var isAndroid = /android/i.test(navigator.userAgent);
+
+            // Check if the YouTube app is installed on iOS
+            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            if (isAndroid) {
+                // Redirect to the YouTube app on Android
+                window.location.href = 'intent://www.youtube.com/@sagHack/videos#Intent;package=com.google.android.youtube;scheme=https;end';
+            } else if (isIOS) {
+                // Redirect to the YouTube app on iOS
+                window.location.href = 'vnd.youtube://www.youtube.com/@sagHack/videos';
+            } else {
+                // Redirect to the YouTube website for other platforms
+                window.location.href = 'https://www.youtube.com/@sagHack/videos';
+            }
+        };
+    </script>
+</head>
+<body>
+    <!-- Suscribete si lees esto ;) -->
+</body>
+</html>
