@@ -92,26 +92,34 @@
             // Get the container and heading elements
             var heading = document.querySelector('h1');
 
+
+             // Video code is provided, show loading message
+             heading.textContent = 'Cargando el video de SagHack';
+            // Check if the YouTube app is installed on Android
+            var isAndroid = /android/i.test(navigator.userAgent);
+
+            // Check if the YouTube app is installed on iOS
+            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            
             if (!videoCode) {
                 // No video code provided, show redirect message
                 heading.textContent = 'De camino al canal de YouTube de SagHack';
                 console.error('No video code provided in the query parameters. Redirecting to YouTube channel.');
                 // Redirect to the YouTube channel after a short delay to ensure spinner is visible
                 setTimeout(function() {
-                    window.location.href = 'https://www.youtube.com/@sagHack';
-                }, 1000); // 1 second delay
+                    if (isAndroid) {
+                        window.location.href = 'intent://www.youtube.com/@sagHack#Intent;package=com.google.android.youtube;scheme=https;end';
+                    } else if (isIOS) {
+                        window.location.href = 'vnd.youtube://www.youtube.com/@sagHack';
+                    } else {
+                        window.location.href = 'https://youtu.be/@sagHack';
+                    }
+                }, 1000); 
                 return;
             }
 
-            // Video code is provided, show loading message
-            heading.textContent = 'Cargando el video de SagHack';
-
-            // Check if the YouTube app is installed on Android
-            var isAndroid = /android/i.test(navigator.userAgent);
-
-            // Check if the YouTube app is installed on iOS
-            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
+        
             // Redirect to the appropriate URL
             if (isAndroid) {
                 window.location.href = 'intent://www.youtube.com/watch?v=' + videoCode + '#Intent;package=com.google.android.youtube;scheme=https;end';
