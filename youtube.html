@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open YouTube Link</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Allows stacking of logo, container, spinner, and message */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background: url('img/galaxias.jpg') no-repeat center center fixed;
+            background-size: cover; /* Ensures the background image covers the entire viewport */
+        }
+
+        .logo {
+            width: 120px; /* Adjust size as needed */
+            margin-bottom: 20px; /* Space between logo and container */
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 600px; /* Ensures the container is not too wide on large screens */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0;
+            color: #000000;
+        }
+
+        .loading-spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #000000; /* Black */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-top: 20px; /* Space between the container and spinner */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            margin-top: 20px; /* Space between spinner and message */
+            font-size: 16px; /* Adjust size as needed */
+            color: #000000;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // Function to get query parameters from URL
+            function getQueryParam(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+
+            // Retrieve the YouTube video code from the query parameter
+            var videoCode = getQueryParam('link');
+
+            // Create and append the spinner element
+            var spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            document.body.appendChild(spinner);
+
+            // Create and append the message element (initially hidden)
+            var message = document.createElement('div');
+            message.className = 'message';
+            message.textContent = 'Si tarda mucho busca en YouTube @SagHack';
+            message.style.display = 'none'; // Hide initially
+            document.body.appendChild(message);
+
+            // Show the message after 3 seconds
+            setTimeout(function() {
+                message.style.display = 'block'; // Show message
+            }, 3000); // 3 seconds delay
+
+            // Get the container and heading elements
+            var heading = document.querySelector('h1');
+
+            if (!videoCode) {
+                // No video code provided, show redirect message
+                heading.textContent = 'De camino al canal de YouTube de SagHack';
+                console.error('No video code provided in the query parameters. Redirecting to YouTube channel.');
+                // Redirect to the YouTube channel after a short delay to ensure spinner is visible
+                setTimeout(function() {
+                    window.location.href = 'https://www.youtube.com/@sagHack';
+                }, 1000); // 1 second delay
+                return;
+            }
+
+            // Video code is provided, show loading message
+            heading.textContent = 'Cargando el video de SagHack';
+
+            // Check if the YouTube app is installed on Android
+            var isAndroid = /android/i.test(navigator.userAgent);
+
+            // Check if the YouTube app is installed on iOS
+            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            // Redirect to the appropriate URL
+            if (isAndroid) {
+                window.location.href = 'intent://www.youtube.com/watch?v=' + videoCode + '#Intent;package=com.google.android.youtube;scheme=https;end';
+            } else if (isIOS) {
+                window.location.href = 'vnd.youtube://www.youtube.com/watch?v=' + videoCode;
+            } else {
+                window.location.href = 'https://youtu.be/' + videoCode;
+            }
+        };
+    </script>
+</head>
+<body>
+    <img src="img/youtube_logo.png" alt="YouTube Logo" class="logo">
+    <div class="container">
+        <h1></h1> <!-- Heading will be updated by JavaScript -->
+    </div>
+    <!-- Spinner and message will be added dynamically by JavaScript -->
+</body>
+</html>
